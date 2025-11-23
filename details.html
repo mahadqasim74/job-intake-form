@@ -23,7 +23,7 @@
     <div class="container">
         <div class="form-wrapper">
             <header class="form-header">
-                <div class="header-top">
+                <div class="header-top header-with-logout">
                     <a href="records.html" class="btn-secondary small">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -31,6 +31,9 @@
                         </svg>
                         Back to Records
                     </a>
+                    <button onclick="logout()" class="btn-logout">
+                        Sign Out
+                    </button>
                 </div>
                 <h1 id="headerJobName">Loading...</h1>
                 <p id="headerJobNumber">Job Details</p>
@@ -177,6 +180,7 @@
 
     <!-- Scripts -->
     <script src="config.js"></script>
+    <script src="auth.js"></script>
     <script src="details.js"></script>
 </body>
 
