@@ -27,8 +27,6 @@ if (isLoginPage) {
 
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
-    const nameInput = document.getElementById('fullName');
-    const nameGroup = document.getElementById('nameGroup');
 
     const submitBtn = document.getElementById('submitBtn');
     const toggleAuth = document.getElementById('toggleAuth');
@@ -58,15 +56,11 @@ if (isLoginPage) {
             authTitle.textContent = 'Create an account';
             submitBtn.textContent = 'Sign Up';
             toggleText.innerHTML = 'Already have an account? <a href="#" id="toggleAuth">Sign In</a>';
-            nameGroup.classList.remove('hidden');
-            nameInput.required = true;
             forgotPasswordLink.parentElement.classList.add('hidden');
         } else {
             authTitle.textContent = 'Sign in to access the Job Intake Form';
             submitBtn.textContent = 'Sign In';
             toggleText.innerHTML = 'Don\'t have an account? <a href="#" id="toggleAuth">Sign Up</a>';
-            nameGroup.classList.add('hidden');
-            nameInput.required = false;
             forgotPasswordLink.parentElement.classList.remove('hidden');
         }
 
@@ -99,7 +93,6 @@ if (isLoginPage) {
 
         const email = emailInput.value;
         const password = passwordInput.value;
-        const fullName = nameInput.value;
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Processing...';
@@ -109,15 +102,10 @@ if (isLoginPage) {
             let error;
 
             if (isSignUp) {
-                // Sign Up with Metadata
+                // Sign Up
                 const result = await supabase.auth.signUp({
                     email,
                     password,
-                    options: {
-                        data: {
-                            full_name: fullName
-                        }
-                    }
                 });
                 error = result.error;
 
@@ -218,21 +206,4 @@ async function logout() {
         window.location.href = 'login.html';
     }
 }
-
-// Display Greeting
-async function displayGreeting() {
-    const greetingElement = document.getElementById('userGreeting');
-    if (!greetingElement || !supabase) return;
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user && user.user_metadata && user.user_metadata.full_name) {
-        greetingElement.textContent = `Welcome, ${user.user_metadata.full_name}`;
-    } else if (user) {
-        greetingElement.textContent = `Welcome, ${user.email.split('@')[0]}`;
-    }
-}
-
-// Call greeting if not on login page
-if (!isLoginPage) {
-    displayGreeting();
-}
+```
