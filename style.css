@@ -639,4 +639,34 @@ tr:hover td {
     .details-grid {
         grid-template-columns: 1fr;
     }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .form-actions button {
+        width: 100%;
+        margin-right: 0 !important;
+    }
+}
+
+/* Danger Button */
+.btn-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: #ff6b6b;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-danger:hover {
+    background: rgba(220, 53, 69, 0.2);
+    transform: translateY(-2px);
 }

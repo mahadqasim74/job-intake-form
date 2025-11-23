@@ -98,6 +98,35 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
     }
 });
 
+// Edit Record
+document.getElementById('editBtn').addEventListener('click', () => {
+    if (!currentRecord) return;
+    window.location.href = `index.html?id=${currentRecord.id}`;
+});
+
+// Delete Record
+document.getElementById('deleteBtn').addEventListener('click', async () => {
+    if (!currentRecord) return;
+
+    if (confirm('Are you sure you want to delete this record? This action cannot be undone.')) {
+        try {
+            const { error } = await supabase
+                .from('jobs')
+                .delete()
+                .eq('id', currentRecord.id);
+
+            if (error) throw error;
+
+            alert('Record deleted successfully');
+            window.location.href = 'records.html';
+
+        } catch (error) {
+            console.error('Error deleting record:', error);
+            showToast('Error deleting record: ' + error.message, 4000);
+        }
+    }
+});
+
 function showToast(message, duration = 3000) {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');

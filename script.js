@@ -212,6 +212,67 @@ function generatePDF() {
 // Initialize Supabase
 initSupabase();
 
+let editingId = null;
+
+// Check for edit mode on load
+document.addEventListener('DOMContentLoaded', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recordId = urlParams.get('id');
+
+    if (recordId) {
+        editingId = recordId;
+        await loadRecordForEdit(recordId);
+    }
+});
+
+async function loadRecordForEdit(id) {
+    if (!supabase) return;
+
+    console.log('📝 Loading record for edit:', id);
+    const downloadBtn = document.getElementById('downloadBtn');
+    downloadBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+        </svg>
+        Update & Download PDF
+    `;
+
+    try {
+        const { data, error } = await supabase
+            .from('jobs')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+
+        // Populate form
+        document.getElementById('jobName').value = data.job_name || '';
+        document.getElementById('jobNumber').value = data.job_number || '';
+        document.getElementById('location').value = data.location || '';
+        document.getElementById('jobStartDate').value = data.job_start_date || '';
+        document.getElementById('pm').value = data.pm || '';
+        document.getElementById('superintendent').value = data.superintendent || '';
+        document.getElementById('sub').value = data.sub || '';
+        document.getElementById('trade').value = data.trade || '';
+        document.getElementById('submittal').value = data.submittal || '';
+        document.getElementById('scopeOfWork').value = data.scope_of_work || '';
+        document.getElementById('specialRequirements').value = data.special_requirements || '';
+        document.getElementById('contactName').value = data.contact_name || '';
+        document.getElementById('contactPhone').value = data.contact_phone || '';
+        document.getElementById('contactEmail').value = data.contact_email || '';
+        document.getElementById('notes').value = data.notes || '';
+
+        showToast('Record loaded for editing', 3000);
+
+    } catch (error) {
+        console.error('Error loading record:', error);
+        showToast('Error loading record for edit', 4000);
+    }
+}
+
 // Form submit handler
 form.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -250,16 +311,28 @@ form.addEventListener('submit', async function (e) {
     };
 
     try {
-        // 1. Save to Database first
+        // 1. Save/Update Database
         if (supabase) {
             console.log('💾 Saving to Supabase...');
-            const { error } = await supabase
-                .from('jobs')
-                .insert([formData]);
+            let error;
+
+            if (editingId) {
+                // Update existing record
+                const result = await supabase
+                    .from('jobs')
+                    .update(formData)
+                    .eq('id', editingId);
+                error = result.error;
+            } else {
+                // Insert new record
+                const result = await supabase
+                    .from('jobs')
+                    .insert([formData]);
+                error = result.error;
+            }
 
             if (error) {
                 console.error('❌ Supabase error:', error);
-                // We don't stop PDF generation if DB fails, but we log it
                 showToast('Warning: Could not save to database, but generating PDF...', 3000);
             } else {
                 console.log('✅ Saved to database');
@@ -270,7 +343,16 @@ form.addEventListener('submit', async function (e) {
         console.log('📄 Starting PDF generation...');
         const fileName = generatePDF();
         console.log('✅ PDF generated successfully:', fileName);
-        showToast(`PDF "${fileName}" downloaded & record saved!`, 4000);
+
+        if (editingId) {
+            showToast(`Record updated & PDF downloaded!`, 4000);
+            // Optional: Redirect back to details after short delay
+            setTimeout(() => {
+                window.location.href = `details.html?id=${editingId}`;
+            }, 2000);
+        } else {
+            showToast(`PDF "${fileName}" downloaded & record saved!`, 4000);
+        }
 
     } catch (error) {
         console.error('❌ Error:', error);
