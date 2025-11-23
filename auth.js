@@ -22,7 +22,6 @@ async function checkSession() {
 // Login Page Logic
 if (isLoginPage) {
     const authForm = document.getElementById('authForm');
-    const resetRequestForm = document.getElementById('resetRequestForm');
     const updatePasswordForm = document.getElementById('updatePasswordForm');
 
     const emailInput = document.getElementById('email');
@@ -75,91 +74,12 @@ if (isLoginPage) {
     // Forgot Password Flow
     forgotPasswordLink.addEventListener('click', (e) => {
         e.preventDefault();
-        authTitle.textContent = 'Reset Password';
-        authForm.classList.add('hidden');
-        authFooter.classList.add('hidden');
-        resetRequestForm.classList.remove('hidden');
-        authMessage.classList.add('hidden');
+        alert("Please contact the administrator to reset your password.");
     });
 
     backToLoginLink.addEventListener('click', (e) => {
         e.preventDefault();
         window.location.reload();
-    });
-
-    // Handle Sign In / Sign Up
-    authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const email = emailInput.value;
-        const password = passwordInput.value;
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Processing...';
-        authMessage.classList.add('hidden');
-
-        try {
-            let error;
-
-            if (isSignUp) {
-                // Sign Up
-                const result = await supabase.auth.signUp({
-                    email,
-                    password,
-                });
-                error = result.error;
-
-                if (!error) {
-                    showMessage('success', 'Account created! Please check your email to confirm.');
-                }
-            } else {
-                // Sign In
-                const result = await supabase.auth.signInWithPassword({
-                    email,
-                    password,
-                });
-                error = result.error;
-
-                if (!error) {
-                    window.location.href = 'index.html';
-                }
-            }
-
-            if (error) throw error;
-
-        } catch (error) {
-            console.error('Auth error:', error);
-            showMessage('error', error.message);
-        } finally {
-            if (!isSignUp) submitBtn.textContent = 'Sign In';
-            else submitBtn.textContent = 'Sign Up';
-            submitBtn.disabled = false;
-        }
-    });
-
-    // Handle Reset Request
-    resetRequestForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('resetEmail').value;
-        const btn = document.getElementById('resetBtn');
-
-        btn.disabled = true;
-        btn.textContent = 'Sending...';
-
-        try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.href,
-            });
-
-            if (error) throw error;
-            showMessage('success', 'Check your email for the password reset link.');
-
-        } catch (error) {
-            showMessage('error', error.message);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Send Reset Link';
-        }
     });
 
     // Handle Update Password
