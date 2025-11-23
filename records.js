@@ -94,6 +94,5 @@ function formatDate(dateString) {
 }
 
 function viewDetails(id) {
-    // For now, just alert. In a real app, this could open a modal or detail page
-    alert('View details for ID: ' + id);
+    window.location.href = `details.html?id=${id}`;
 }

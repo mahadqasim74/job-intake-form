@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - Job Intake Form</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <header class="form-header">
+                <div class="header-top">
+                    <a href="records.html" class="btn-secondary small">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Back to Records
+                    </a>
+                </div>
+                <h1 id="headerJobName">Loading...</h1>
+                <p id="headerJobNumber">Job Details</p>
+            </header>
+
+            <div id="loadingState" class="text-center" style="padding: 4rem;">
+                <p>Loading record details...</p>
+            </div>
+
+            <div id="detailsContent" class="hidden">
+                <!-- Project Details Section -->
+                <div class="form-section">
+                    <h2>Project Details</h2>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Job Name</label>
+                            <div class="detail-value" id="d_jobName">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Job Number</label>
+                            <div class="detail-value" id="d_jobNumber">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Location</label>
+                            <div class="detail-value" id="d_location">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Start Date</label>
+                            <div class="detail-value" id="d_startDate">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personnel Section -->
+                <div class="form-section">
+                    <h2>Personnel</h2>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Project Manager</label>
+                            <div class="detail-value" id="d_pm">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Superintendent</label>
+                            <div class="detail-value" id="d_superintendent">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Subcontractor</label>
+                            <div class="detail-value" id="d_sub">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Trade</label>
+                            <div class="detail-value" id="d_trade">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scope & Requirements -->
+                <div class="form-section">
+                    <h2>Scope & Requirements</h2>
+                    <div class="detail-item full-width">
+                        <label>Submittal</label>
+                        <div class="detail-value" id="d_submittal">-</div>
+                    </div>
+                    <div class="detail-item full-width">
+                        <label>Scope of Work</label>
+                        <div class="detail-value" id="d_scope">-</div>
+                    </div>
+                    <div class="detail-item full-width">
+                        <label>Special Requirements</label>
+                        <div class="detail-value" id="d_special">-</div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-section">
+                    <h2>Contact Information</h2>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Contact Name</label>
+                            <div class="detail-value" id="d_contactName">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Phone</label>
+                            <div class="detail-value" id="d_contactPhone">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>Email</label>
+                            <div class="detail-value" id="d_contactEmail">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="form-section">
+                    <h2>Additional Notes</h2>
+                    <div class="detail-item full-width">
+                        <div class="detail-value" id="d_notes">-</div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+                    <button type="button" id="downloadBtn" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toastMessage">Action successful!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="details.js"></script>
+</body>
+
+</html>

@@ -570,8 +570,73 @@ tr:hover td {
     transform: scale(1.1);
 }
 
-/* Link Button */
-a.btn-secondary {
-    text-decoration: none;
-    display: inline-flex;
+/* ========================================
+   Details Page Styles
+   ======================================== */
+.header-top {
+    margin-bottom: var(--spacing-md);
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detail-item label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.detail-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.detail-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.detail-item.full-width .detail-value {
+    align-items: flex-start;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.form-section h2 {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
 }
