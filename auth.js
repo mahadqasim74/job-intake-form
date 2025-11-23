@@ -22,7 +22,6 @@ async function checkSession() {
 // Login Page Logic
 if (isLoginPage) {
     const authForm = document.getElementById('authForm');
-    const updatePasswordForm = document.getElementById('updatePasswordForm');
 
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -37,14 +36,6 @@ if (isLoginPage) {
     const backToLoginLink = document.getElementById('backToLogin');
 
     let isSignUp = false;
-
-    // Check for Password Reset Hash
-    if (window.location.hash.includes('type=recovery')) {
-        authTitle.textContent = 'Set New Password';
-        authForm.classList.add('hidden');
-        authFooter.classList.add('hidden');
-        updatePasswordForm.classList.remove('hidden');
-    }
 
     // Toggle between Sign In and Sign Up
     toggleAuth.addEventListener('click', (e) => {
@@ -82,31 +73,7 @@ if (isLoginPage) {
         window.location.reload();
     });
 
-    // Handle Update Password
-    updatePasswordForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const newPassword = document.getElementById('newPassword').value;
-        const btn = document.getElementById('updatePasswordBtn');
 
-        btn.disabled = true;
-        btn.textContent = 'Updating...';
-
-        try {
-            const { error } = await supabase.auth.updateUser({ password: newPassword });
-
-            if (error) throw error;
-
-            showMessage('success', 'Password updated! Redirecting...');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-
-        } catch (error) {
-            showMessage('error', error.message);
-            btn.disabled = false;
-            btn.textContent = 'Update Password';
-        }
-    });
 
     function showMessage(type, text) {
         authMessage.textContent = text;
