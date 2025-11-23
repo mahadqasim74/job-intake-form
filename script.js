@@ -209,8 +209,11 @@ function generatePDF() {
     return fileName;
 }
 
+// Initialize Supabase
+initSupabase();
+
 // Form submit handler
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', async function (e) {
     e.preventDefault();
     console.log('🔍 Form submitted');
 
@@ -227,23 +230,57 @@ form.addEventListener('submit', function (e) {
     downloadBtn.classList.add('loading');
     downloadBtn.disabled = true;
 
-    // Simulate a small delay for better UX
-    setTimeout(() => {
-        try {
-            console.log('📄 Starting PDF generation...');
-            const fileName = generatePDF();
-            console.log('✅ PDF generated successfully:', fileName);
-            showToast(`PDF "${fileName}" downloaded successfully!`, 4000);
-        } catch (error) {
-            console.error('❌ Error generating PDF:', error);
-            showToast('Error generating PDF. Please try again.', 4000);
-        } finally {
-            // Remove loading state
-            downloadBtn.classList.remove('loading');
-            downloadBtn.disabled = false;
-            console.log('🔄 Button state reset');
+    // Get form data for database
+    const formData = {
+        job_name: document.getElementById('jobName').value,
+        job_number: document.getElementById('jobNumber').value,
+        location: document.getElementById('location').value,
+        job_start_date: document.getElementById('jobStartDate').value,
+        pm: document.getElementById('pm').value,
+        superintendent: document.getElementById('superintendent').value,
+        sub: document.getElementById('sub').value,
+        trade: document.getElementById('trade').value,
+        submittal: document.getElementById('submittal').value,
+        scope_of_work: document.getElementById('scopeOfWork').value,
+        special_requirements: document.getElementById('specialRequirements').value,
+        contact_name: document.getElementById('contactName').value,
+        contact_phone: document.getElementById('contactPhone').value,
+        contact_email: document.getElementById('contactEmail').value,
+        notes: document.getElementById('notes').value
+    };
+
+    try {
+        // 1. Save to Database first
+        if (supabase) {
+            console.log('💾 Saving to Supabase...');
+            const { error } = await supabase
+                .from('jobs')
+                .insert([formData]);
+
+            if (error) {
+                console.error('❌ Supabase error:', error);
+                // We don't stop PDF generation if DB fails, but we log it
+                showToast('Warning: Could not save to database, but generating PDF...', 3000);
+            } else {
+                console.log('✅ Saved to database');
+            }
         }
-    }, 500);
+
+        // 2. Generate PDF
+        console.log('📄 Starting PDF generation...');
+        const fileName = generatePDF();
+        console.log('✅ PDF generated successfully:', fileName);
+        showToast(`PDF "${fileName}" downloaded & record saved!`, 4000);
+
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showToast('Error processing request. Please try again.', 4000);
+    } finally {
+        // Remove loading state
+        downloadBtn.classList.remove('loading');
+        downloadBtn.disabled = false;
+        console.log('🔄 Button state reset');
+    }
 });
 
 // Reset button handler

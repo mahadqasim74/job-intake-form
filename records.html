@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Records - Job Intake Form</title>
+    <meta name="description" content="Search and view job intake records">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <header class="form-header">
+                <h1>Job Records</h1>
+                <p>Search and view existing job entries</p>
+                <div class="header-actions">
+                    <a href="index.html" class="btn-secondary small">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Back to Form
+                    </a>
+                </div>
+            </header>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="form-group full-width">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search by Job Name, Number, or Location...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="results-container">
+                <div class="table-responsive">
+                    <table id="recordsTable">
+                        <thead>
+                            <tr>
+                                <th>Job Number</th>
+                                <th>Job Name</th>
+                                <th>Location</th>
+                                <th>Start Date</th>
+                                <th>PM</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsBody">
+                            <!-- Records will be populated here -->
+                            <tr>
+                                <td colspan="6" class="text-center">Loading records...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="noResults" class="no-results hidden">
+                    <p>No records found matching your search.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="records.js"></script>
+</body>
+
+</html>
