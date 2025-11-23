@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Intake Form - Professional PDF Generator</title>
+    <meta name="description" content="Interactive job intake form with PDF download capability">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <header class="form-header">
+                <h1>Job Intake Form</h1>
+                <p>Fill out the form below and download your PDF</p>
+            </header>
+
+            <form id="jobIntakeForm">
+                <!-- Row 1: Job Name and Job Number -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobName">Job Name <span class="required">*</span></label>
+                        <input type="text" id="jobName" name="jobName" required placeholder="Enter job name">
+                    </div>
+                    <div class="form-group">
+                        <label for="jobNumber">Job Number <span class="required">*</span></label>
+                        <input type="text" id="jobNumber" name="jobNumber" required placeholder="Enter job number">
+                    </div>
+                </div>
+
+                <!-- Row 2: Location -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="location">Location <span class="required">*</span></label>
+                        <input type="text" id="location" name="location" required placeholder="Enter job location">
+                    </div>
+                </div>
+
+                <!-- Row 3: Job Start Date -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobStartDate">Job Start Date <span class="required">*</span></label>
+                        <input type="date" id="jobStartDate" name="jobStartDate" required>
+                    </div>
+                </div>
+
+                <!-- Row 4: PM and Superintendent -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pm">PM (Project Manager) <span class="required">*</span></label>
+                        <input type="text" id="pm" name="pm" required placeholder="Enter PM name">
+                    </div>
+                    <div class="form-group">
+                        <label for="superintendent">Superintendent <span class="required">*</span></label>
+                        <input type="text" id="superintendent" name="superintendent" required
+                            placeholder="Enter superintendent name">
+                    </div>
+                </div>
+
+                <!-- Row 5: Sub and Trade -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sub">Sub (Sub-contractor) <span class="required">*</span></label>
+                        <input type="text" id="sub" name="sub" required placeholder="Enter sub-contractor name">
+                    </div>
+                    <div class="form-group">
+                        <label for="trade">Trade <span class="required">*</span></label>
+                        <input type="text" id="trade" name="trade" required placeholder="Enter trade type">
+                    </div>
+                </div>
+
+                <!-- Row 6: Submittal -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="submittal">Submittal</label>
+                        <textarea id="submittal" name="submittal" rows="3"
+                            placeholder="Enter submittal details (optional)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Row 7: Scope of Work -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="scopeOfWork">Scope of Work <span class="required">*</span></label>
+                        <textarea id="scopeOfWork" name="scopeOfWork" rows="4" required
+                            placeholder="Describe the scope of work"></textarea>
+                    </div>
+                </div>
+
+                <!-- Row 8: Special Requirements -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="specialRequirements">Special Requirements</label>
+                        <textarea id="specialRequirements" name="specialRequirements" rows="3"
+                            placeholder="Enter any special requirements (optional)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Row 9: Contact Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contactName">Contact Name</label>
+                        <input type="text" id="contactName" name="contactName" placeholder="Enter contact name">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Contact Phone</label>
+                        <input type="tel" id="contactPhone" name="contactPhone" placeholder="Enter phone number">
+                    </div>
+                </div>
+
+                <!-- Row 10: Email -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="contactEmail">Contact Email</label>
+                        <input type="email" id="contactEmail" name="contactEmail" placeholder="Enter email address">
+                    </div>
+                </div>
+
+                <!-- Row 11: Additional Notes -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" name="notes" rows="4"
+                            placeholder="Enter any additional notes or comments"></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary" id="downloadBtn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 13L6 9L7.4 7.55L9 9.15V3H11V9.15L12.6 7.55L14 9L10 13ZM5 17C4.45 17 3.979 16.804 3.587 16.412C3.195 16.02 2.99934 15.5493 3 15V12H5V15H15V12H17V15C17 15.55 16.804 16.021 16.412 16.413C16.02 16.805 15.5493 17.0007 15 17H5Z"
+                                fill="currentColor" />
+                        </svg>
+                        Download PDF
+                    </button>
+                    <button type="button" class="btn-secondary" id="resetBtn">Reset Form</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M8.6 14.6L15.65 7.55L14.25 6.15L8.6 11.8L5.75 8.95L4.35 10.35L8.6 14.6ZM10 20C8.61667 20 7.31667 19.7373 6.1 19.212C4.88333 18.6867 3.825 17.9743 2.925 17.075C2.025 16.175 1.31267 15.1167 0.788 13.9C0.263333 12.6833 0.000666667 11.3833 0 10C0 8.61667 0.262667 7.31667 0.788 6.1C1.31333 4.88333 2.02567 3.825 2.925 2.925C3.825 2.025 4.88333 1.31267 6.1 0.788C7.31667 0.263333 8.61667 0.000666667 10 0C11.3833 0 12.6833 0.262667 13.9 0.788C15.1167 1.31333 16.175 2.02567 17.075 2.925C17.975 3.825 18.6877 4.88333 19.213 6.1C19.7383 7.31667 20.0007 8.61667 20 10C20 11.3833 19.7373 12.6833 19.212 13.9C18.6867 15.1167 17.9743 16.175 17.075 17.075C16.175 17.975 15.1167 18.6877 13.9 19.213C12.6833 19.7383 11.3833 20.0007 10 20Z"
+                fill="currentColor" />
+        </svg>
+        <span id="toastMessage">PDF downloaded successfully!</span>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js?v=2"></script>
+</body>
+
+</html>
