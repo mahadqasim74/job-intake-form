@@ -66,12 +66,20 @@ function renderRecords(records) {
             <td>${formatDate(record.job_start_date)}</td>
             <td>${escapeHtml(record.pm)}</td>
             <td>
-                <button onclick="viewDetails('${record.id}')" class="btn-icon" title="View Details">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                </button>
+                <div class="action-buttons">
+                    <button onclick="viewDetails('${record.id}')" class="btn-icon" title="View Details">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                    <button onclick="deleteRecord('${record.id}')" class="btn-icon delete-icon" title="Delete Record">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
             </td>
         `;
         recordsBody.appendChild(row);
@@ -95,4 +103,24 @@ function formatDate(dateString) {
 
 function viewDetails(id) {
     window.location.href = `details.html?id=${id}`;
+}
+
+async function deleteRecord(id) {
+    if (confirm('Are you sure you want to delete this record? This action cannot be undone.')) {
+        try {
+            const { error } = await supabase
+                .from('jobs')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+
+            // Refresh the list
+            fetchRecords(searchInput.value);
+
+        } catch (error) {
+            console.error('Error deleting record:', error);
+            alert('Error deleting record: ' + error.message);
+        }
+    }
 }
